@@ -7,8 +7,15 @@ const initialState = {
   toDos: [],
   deletedToDos: [],
 };
+interface Action {
+  type: string;
+  payload: string;
+}
 
-export const toDosReducer = (state: ToDosState = initialState, action: any) => {
+export const toDosReducer = (
+  state: ToDosState = initialState,
+  action: Action
+) => {
   switch (action.type) {
     case "ADD_TO_DO": {
       return { ...state, toDos: [...state.toDos, action.payload] };
