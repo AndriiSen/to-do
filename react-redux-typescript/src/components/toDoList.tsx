@@ -8,8 +8,7 @@ interface ToDoListProps {
 }
 
 export const ToDoList = ({ isDeletedList }: ToDoListProps) => {
-  const toDos = useSelector((state: ToDosState) => state.toDos);
-  const deletedToDos = useSelector((state: ToDosState) => state.deletedToDos);
+  const { deletedToDos, toDos } = useSelector((state: ToDosState) => state);
   const renderItem = (
     value: string,
     index: number,
