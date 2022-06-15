@@ -1,3 +1,5 @@
+import { ActionTypes, IActionType } from "../constants/actionTypes";
+
 export interface ToDosState {
   toDos: string[];
   deletedToDos: string[];
@@ -8,19 +10,22 @@ const initialState = {
   deletedToDos: [],
 };
 
-export const toDosReducer = (state: ToDosState = initialState, action: any) => {
+export const toDosReducer = (
+  state: ToDosState = initialState,
+  action: IActionType
+) => {
   switch (action.type) {
-    case "ADD_TO_DO": {
+    case ActionTypes.ADD_TO_DO: {
       return { ...state, toDos: [...state.toDos, action.payload] };
     }
-    case "DELETE_TO_DO": {
+    case ActionTypes.DELETE_TO_DO: {
       return {
         ...state,
         toDos: state.toDos.filter((el) => el !== action.payload),
         deletedToDos: [...state.deletedToDos, action.payload],
       };
     }
-    case "RESTORE_TO_DO": {
+    case ActionTypes.RESTORE_TO_DO: {
       return {
         ...state,
         toDos: [...state.toDos, action.payload],

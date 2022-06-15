@@ -1,6 +1,6 @@
-type Action = { type: "RESTORE_TO_DO"; payload: string };
+import { IRestoreToDo } from "../constants/actionTypes";
 
-export const restoreToDo = (toDo: string): Action => ({
+export const restoreToDo = (toDo: string): IRestoreToDo => ({
   type: "RESTORE_TO_DO",
   payload: toDo,
 });

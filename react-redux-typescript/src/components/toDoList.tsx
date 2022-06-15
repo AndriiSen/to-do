@@ -1,54 +1,41 @@
-import {
-  Checkbox,
-  IconButton,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { useSelector } from "react-redux";
 import { ToDosState } from "../redux/reducers/toDosReducer";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from "react-redux";
-import { deleteToDo } from "../redux/actions/deleteToDo";
+import { ToDoItem } from "./ToDoItem";
 
-export const ToDoList = () => {
-  const toDos = useSelector((state: ToDosState) => state.toDos);
-  const dispatch = useDispatch();
+interface ToDoListProps {
+  isDeletedList: boolean;
+}
 
-  const onDeleteToDo = (toDo: string) => {
-    dispatch(deleteToDo(toDo));
+export const ToDoList = ({ isDeletedList }: ToDoListProps) => {
+  const { deletedToDos, toDos } = useSelector((state: ToDosState) => state);
+  const renderItem = (
+    value: string,
+    index: number,
+    labelId: string,
+    isDeletedList: boolean
+  ) => {
+    return (
+      <ToDoItem
+        key={value + index}
+        value={value}
+        labelId={labelId}
+        isDeletedList={isDeletedList}
+      ></ToDoItem>
+    );
+  };
+
+  const renderToDoList = (itemsArray: string[]) => {
+    return itemsArray.map((value, index) => {
+      const labelId = `checkbox-list-label-${value}`;
+
+      return renderItem(value, index, labelId, isDeletedList);
+    });
   };
 
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      {toDos.map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-
-        return (
-          <ListItem key={value} disablePadding>
-            <ListItemButton role={undefined} dense>
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value} />
-              <IconButton
-                edge="end"
-                aria-label="comments"
-                onClick={() => onDeleteToDo(value)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
+      {renderToDoList(isDeletedList ? deletedToDos : toDos)}
     </List>
   );
 };

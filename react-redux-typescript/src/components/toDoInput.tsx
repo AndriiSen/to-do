@@ -5,7 +5,9 @@ import { styled } from "@mui/system";
 
 const InputSection = styled("div")({
   display: "flex",
-  justifyContent: "space-around",
+  flexDirection: "row",
+  alignItems: "baseline",
+  padding: "5px 0 5px 0",
 });
 
 interface ToDoInputProps {
@@ -13,22 +15,30 @@ interface ToDoInputProps {
 }
 export const ToDoInput: React.FC<ToDoInputProps> = ({ addToDo }) => {
   const [newToDo, setNewToDo] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
   const updateTodo = (event: ChangeEvent<HTMLInputElement>) => {
     setNewToDo(event.target.value);
   };
 
   const onAddToDoClick = () => {
-    addToDo(newToDo);
-    setNewToDo("");
+    if (!newToDo) {
+      setError(true);
+    } else {
+      addToDo(newToDo);
+      setNewToDo("");
+      setError(false);
+    }
   };
 
   return (
     <InputSection>
       <TextField
+        error={error}
         onChange={updateTodo}
         label="Add new task"
         variant="outlined"
+        helperText={error ? "Please enter new task" : ""}
       />
       <Button
         onClick={onAddToDoClick}

@@ -1,6 +1,6 @@
-type Action = { type: "DELETE_TO_DO"; payload: string };
+import { IDeleteToDo } from "../constants/actionTypes";
 
-export const deleteToDo = (toDo: string): Action => ({
+export const deleteToDo = (toDo: string): IDeleteToDo => ({
   type: "DELETE_TO_DO",
   payload: toDo,
 });

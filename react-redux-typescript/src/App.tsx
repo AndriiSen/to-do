@@ -1,13 +1,13 @@
-import { useDispatch } from "react-redux";
-import { DeletedToDoList } from "./components/deletedToDoList";
-import { ToDoInput } from "./components/toDoInput";
-import { ToDoList } from "./components/toDoList";
+import { useDispatch, useSelector } from "react-redux";
+import { ToDoList } from "./components/ToDoList";
+import { ToDoInput } from "./components/ToDoInput";
 import { addToDo } from "./redux/actions/addToDo";
 import { styled } from "@mui/system";
 import { useState } from "react";
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
 import { IconButton } from "@mui/material";
 import Menu from "@mui/material/Menu";
+import { ToDosState } from "./redux/reducers/toDosReducer";
 
 const MainContainer = styled("div")({
   display: "flex",
@@ -22,7 +22,11 @@ const ToDosContainer = styled("div")({
   alignItems: "center",
 });
 
+const MenuStateTitle = styled("div")({
+  padding: "5px",
+});
 const App = () => {
+  const deletedToDos = useSelector((state: ToDosState) => state.deletedToDos);
   const dispatch = useDispatch();
   const onAddToDo = (toDo: string) => {
     dispatch(addToDo(toDo));
@@ -42,7 +46,7 @@ const App = () => {
         <ToDosContainer>
           <h2>Your assignments</h2>
           <ToDoInput addToDo={onAddToDo}></ToDoInput>
-          <ToDoList></ToDoList>
+          <ToDoList isDeletedList={false}></ToDoList>
         </ToDosContainer>
         <ToDosContainer>
           <IconButton onClick={handleClick}>
@@ -54,7 +58,11 @@ const App = () => {
             open={open}
             onClose={handleClose}
           >
-            <DeletedToDoList></DeletedToDoList>
+            {deletedToDos.length > 0 ? (
+              <ToDoList isDeletedList={true}></ToDoList>
+            ) : (
+              <MenuStateTitle>No deleted todos yeat</MenuStateTitle>
+            )}
           </Menu>
         </ToDosContainer>
       </MainContainer>
